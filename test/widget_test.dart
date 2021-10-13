@@ -41,7 +41,6 @@ import 'package:violet/script/script_parser.dart';
 import 'package:violet/script/script_runner.dart';
 import 'package:violet/server/community/anon.dart';
 import 'package:violet/server/violet.dart';
-import 'package:violet/server/wsalt.dart';
 
 import 'json/json_lexer.dart';
 import 'json/json_parser.dart';

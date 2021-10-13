@@ -24,7 +24,7 @@ import 'package:violet/pages/main/info/lab/user_bookmark_page.dart';
 import 'package:violet/pages/main/info/user_manual_page.dart';
 import 'package:violet/pages/segment/card_panel.dart';
 import 'package:violet/settings/settings.dart';
-import 'package:violet/server/wsalt.dart';
+// import 'package:violet/server/wsalt.dart';
 
 import 'lab/search_comment.dart';
 

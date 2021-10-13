@@ -3,6 +3,7 @@
 
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -10,6 +11,8 @@ import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:violet/component/downloadable.dart';
 import 'package:violet/database/user/download.dart';
@@ -22,7 +25,6 @@ import 'package:violet/pages/viewer/viewer_page.dart';
 import 'package:violet/pages/viewer/viewer_page_provider.dart';
 import 'package:violet/settings/settings.dart';
 import 'package:violet/widgets/toast.dart';
-
 class DownloadItemWidget extends StatefulWidget {
   final double width;
   final DownloadItemModel item;
@@ -151,7 +153,25 @@ class _DownloadItemWidgetState extends State<DownloadItemWidget>
       );
     });
   }
+  moveFile(File sourceFile, String newPath) async {
+    await Directory(newPath).parent.create();
+    if(FileSystemEntity.isDirectorySync(sourceFile.path)){
+      var dir = Directory(sourceFile.path);
+    dir.listSync().forEach((element) {
+      moveFile(element, newPath+'/'+element.path.split('/').last);
+    });
 
+    } else {
+      try {
+        // prefer using rename as it is probably faster
+        return await sourceFile.rename(newPath);
+      } on FileSystemException catch (e) {
+        // if rename fails, copy the source file and then delete it
+        await sourceFile.copy(newPath);
+        await sourceFile.delete();
+      }
+    }
+  }
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -206,6 +226,56 @@ class _DownloadItemWidgetState extends State<DownloadItemWidget>
           widget.download = true;
           _downloadProcedure();
           setState(() {});
+        } else if (v==3){
+          var toastMsg = "";
+          if(!await Permission.manageExternalStorage.isGranted){
+            await Permission.manageExternalStorage.request();
+          }
+          var copy = Map<String, dynamic>.from(widget.item.result);
+          var docDir = (await getApplicationDocumentsDirectory()).path;
+          if(await Permission.manageExternalStorage.isGranted) {
+            if (copy['Path'].toString().startsWith(docDir)) {
+              var docDirLength = docDir.length;
+              copy['Path'] = (Settings.downloadBasePath +
+                  copy['Path'].toString().substring(docDirLength));
+              List<dynamic> files = jsonDecode(copy['Files']);
+              files = files.map((element) {
+                return Settings.downloadBasePath +
+                    element.toString().substring(docDirLength);
+              }).toList();
+              copy['Files'] = jsonEncode(files);
+              print(copy['Files']);
+              print('Moving');
+              await moveFile(File(widget.item.result['Path']), copy['Path']);
+              print('Complete');
+              toastMsg = "Complete";
+              widget.item.result = copy;
+              await widget.item.update();
+            } else {
+              toastMsg = "Already in external storage";
+            }
+            FlutterToast(context).showToast(
+              child: ToastWrapper(
+                isCheck: true,
+                isWarning: false,
+                icon: Icons.check,
+                msg: toastMsg,
+              ),
+              gravity: ToastGravity.BOTTOM,
+              toastDuration: Duration(seconds: 4),
+            );
+          } else {
+            FlutterToast(context).showToast(
+              child: ToastWrapper(
+                isCheck: true,
+                isWarning: false,
+                icon: Icons.warning,
+                msg: "No Permission",
+              ),
+              gravity: ToastGravity.BOTTOM,
+              toastDuration: Duration(seconds: 4),
+            );
+          }
         }
       },
       onTap: () async {

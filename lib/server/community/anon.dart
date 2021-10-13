@@ -8,12 +8,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:violet/log/log.dart';
 import 'package:violet/server/community/session.dart';
 import 'package:violet/server/violet.dart';
-import 'package:violet/server/wsalt.dart';
+// import 'package:violet/server/wsalt.dart';
 
 class VioletCommunityAnonymous {
   static Future<dynamic> _getV(String api, String params) async {
     var vToken = DateTime.now().toUtc().millisecondsSinceEpoch;
-    var vValid = getValid(vToken.toString());
+    var vValid = /*getValid*/(vToken.toString());
     var gg = await http
         .get(Uri.parse(VioletServer.api + api + '?' + params), headers: {
       'v-token': vToken.toString(),
@@ -30,7 +30,7 @@ class VioletCommunityAnonymous {
 
   static Future<dynamic> _postV(String api, Object body) async {
     var vToken = DateTime.now().toUtc().millisecondsSinceEpoch;
-    var vValid = getValid(vToken.toString());
+    var vValid = /*getValid*/(vToken.toString());
 
     try {
       var res = await http.post(Uri.parse(VioletServer.api + api),

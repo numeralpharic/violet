@@ -10,8 +10,8 @@ import 'package:violet/database/user/record.dart';
 import 'package:violet/log/log.dart';
 import 'package:violet/network/wrapper.dart' as http;
 import 'package:violet/pages/viewer/viewer_report.dart';
-import 'package:violet/server/salt.dart';
-import 'package:violet/server/wsalt.dart' as wsalt;
+// import 'package:violet/server/salt.dart';
+// import 'package:violet/server/wsalt.dart' as wsalt;
 import 'package:violet/settings/settings.dart';
 
 class VioletServer {
@@ -106,7 +106,8 @@ class VioletServer {
 
   static Future<void> view(int articleid) async {
     var vToken = DateTime.now().toUtc().millisecondsSinceEpoch;
-    var vValid = getValid(vToken.toString());
+    
+    var vValid = /*getValid*/(vToken.toString());
     var userId = await getUserAppId();
 
     print(articleid);
@@ -130,7 +131,7 @@ class VioletServer {
 
   static Future<void> viewClose(int articleid, int readTime) async {
     var vToken = DateTime.now().toUtc().millisecondsSinceEpoch;
-    var vValid = getValid(vToken.toString());
+    var vValid = /*getValid*/(vToken.toString());
     var userId = await getUserAppId();
 
     print(articleid);
@@ -158,7 +159,7 @@ class VioletServer {
 
   static Future<void> viewReport(ViewerReport report) async {
     var vToken = DateTime.now().toUtc().millisecondsSinceEpoch;
-    var vValid = getValid(vToken.toString());
+    var vValid = /*getValid*/(vToken.toString());
     var userId = await getUserAppId();
     var submission = report.submission();
     var body = {
@@ -193,7 +194,7 @@ class VioletServer {
 
   static Future<bool> uploadBookmark() async {
     var vToken = DateTime.now().toUtc().millisecondsSinceEpoch;
-    var vValid = getValid(vToken.toString());
+    var vValid = /*getValid*/(vToken.toString());
     var userId = await getUserAppId();
     var upload = (await SharedPreferences.getInstance())
         .getBool('upload_bookmark_178_test');
@@ -283,7 +284,7 @@ class VioletServer {
   static Future<dynamic> recordU(
       [int offset = 0, int count = 10, int limit = 0]) async {
     var vToken = DateTime.now().toUtc().millisecondsSinceEpoch;
-    var vValid = wsalt.getValid(vToken.toString());
+    var vValid = /*wsalt.getValid*/(vToken.toString());
 
     var gg = await http.get(
         '$api/record/recent_u?offset=$offset&count=$count&limit=$limit',
@@ -318,7 +319,7 @@ class VioletServer {
   static Future<dynamic> userRecent(String userAppId,
       [int count = 10, int limit = 0]) async {
     var vToken = DateTime.now().toUtc().millisecondsSinceEpoch;
-    var vValid = wsalt.getValid(vToken.toString());
+    var vValid = /*wsalt.getValid*/(vToken.toString());
 
     var gg = await http.get(
         '$api/record/user_recent?userid=$userAppId&count=$count&limit=$limit',
@@ -349,7 +350,7 @@ class VioletServer {
 
   static Future<dynamic> searchComment(String param) async {
     var vToken = DateTime.now().toUtc().millisecondsSinceEpoch;
-    var vValid = wsalt.getValid(vToken.toString());
+    var vValid = /*wsalt.getValid*/(vToken.toString());
 
     var gg = await http
         .get('$api/excomment/find?q=' + Uri.encodeFull(param), headers: {
@@ -383,7 +384,7 @@ class VioletServer {
 
   static Future<dynamic> searchCommentAuthor(String author) async {
     var vToken = DateTime.now().toUtc().millisecondsSinceEpoch;
-    var vValid = wsalt.getValid(vToken.toString());
+    var vValid = /*wsalt.getValid*/(vToken.toString());
 
     var gg = await http
         .get('$api/excomment/author?q=' + Uri.encodeFull(author), headers: {
@@ -417,7 +418,7 @@ class VioletServer {
 
   static Future<dynamic> searchMessage(String type, String what) async {
     var vToken = DateTime.now().toUtc().millisecondsSinceEpoch;
-    var vValid = wsalt.getValid(vToken.toString());
+    var vValid = /*wsalt.getValid*/(vToken.toString());
 
     var gg = await http.get(
         '${Settings.searchMessageAPI}/$type/' + Uri.encodeFull(what),

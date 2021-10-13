@@ -33,7 +33,7 @@ class DownloadImageMenu extends StatelessWidget {
               child: SizedBox(
                 child: SizedBox(
                   width: 280,
-                  height: (56 * 3 + 16).toDouble(),
+                  height: (56 * 4 + 16).toDouble(),
                   child: Padding(
                     padding: EdgeInsets.fromLTRB(0, 8, 0, 8),
                     child: Column(
@@ -44,6 +44,7 @@ class DownloadImageMenu extends StatelessWidget {
                         _typeItem(context, MdiIcons.refresh, 'Retry', 1),
                         // _typeItem(context, MdiIcons.viewAgendaOutline, 'srt2', 2),
                         _typeItem(context, MdiIcons.trashCan, 'Delete', -1),
+                        _typeItem(context, MdiIcons.folder, 'Migrate', 3),
                         Expanded(
                           child: Container(),
                         )

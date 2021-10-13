@@ -6,7 +6,7 @@ import 'dart:convert';
 import 'package:violet/log/log.dart';
 import 'package:violet/network/wrapper.dart' as http;
 import 'package:violet/server/violet.dart';
-import 'package:violet/server/wsalt.dart';
+// import 'package:violet/server/wsalt.dart';
 
 class VioletCommunitySession {
   static VioletCommunitySession lastSession;
@@ -17,7 +17,7 @@ class VioletCommunitySession {
 
   static Future<VioletCommunitySession> signIn(String id, String pw) async {
     var vToken = DateTime.now().toUtc().millisecondsSinceEpoch;
-    var vValid = getValid(vToken.toString());
+    var vValid = /*getValid*/(vToken.toString());
 
     try {
       var res = await http.post(VioletServer.api + '/community/sign/in',
@@ -39,7 +39,7 @@ class VioletCommunitySession {
 
   static Future<dynamic> checkId(String id) async {
     var vToken = DateTime.now().toUtc().millisecondsSinceEpoch;
-    var vValid = getValid(vToken.toString());
+    var vValid = /*getValid*/(vToken.toString());
 
     try {
       var res =
@@ -60,7 +60,7 @@ class VioletCommunitySession {
 
   static Future<dynamic> checkUserAppId(String userAppId) async {
     var vToken = DateTime.now().toUtc().millisecondsSinceEpoch;
-    var vValid = getValid(vToken.toString());
+    var vValid = /*getValid*/(vToken.toString());
 
     try {
       var res = await http.post(
@@ -82,7 +82,7 @@ class VioletCommunitySession {
 
   static Future<dynamic> checkNickName(String nickName) async {
     var vToken = DateTime.now().toUtc().millisecondsSinceEpoch;
-    var vValid = getValid(vToken.toString());
+    var vValid = /*getValid*/(vToken.toString());
 
     try {
       var res = await http.post(
@@ -105,7 +105,7 @@ class VioletCommunitySession {
   static Future<dynamic> signUp(
       String id, String password, String userAppId, String nickName) async {
     var vToken = DateTime.now().toUtc().millisecondsSinceEpoch;
-    var vValid = getValid(vToken.toString());
+    var vValid = /*getValid*/(vToken.toString());
 
     try {
       var res = await http.post(VioletServer.api + '/community/sign/up',
@@ -131,7 +131,7 @@ class VioletCommunitySession {
 
   static Future<dynamic> getUserInfo(String id) async {
     var vToken = DateTime.now().toUtc().millisecondsSinceEpoch;
-    var vValid = getValid(vToken.toString());
+    var vValid = /*getValid*/(vToken.toString());
 
     try {
       var res = await http.get(

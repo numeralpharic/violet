@@ -42,7 +42,7 @@ import 'package:violet/pages/main/info/lab/user_bookmark_page.dart';
 import 'package:violet/pages/main/patchnote/patchnote_page.dart';
 import 'package:violet/pages/main/views/views_page.dart';
 import 'package:violet/pages/splash/splash_page.dart';
-import 'package:violet/server/wsalt.dart';
+// import 'package:violet/server/wsalt.dart';
 import 'package:violet/settings/settings.dart';
 import 'package:violet/variables.dart';
 import 'package:violet/version/sync.dart';
@@ -91,17 +91,28 @@ class _MainPage2State extends State<MainPage2>
       }
     });
   }
+  static bool shown = false;
+  _showAllDir(context) async {
+    print("printtest");
+    String str="";
+    await (await getApplicationDocumentsDirectory()).list().forEach((element) {
+      str+=element.path.split('/').last+"\n";
+    });
 
+    shown = true;
+  }
   @override
   Widget build(BuildContext context) {
     super.build(context);
     final double statusBarHeight = MediaQuery.of(context).padding.top;
-
+    if(!shown)
+      _showAllDir(context);
     final cardList = [
       DiscordCard(),
       ContactCard(),
       GithubCard(),
     ];
+
 
     return Container(
       child: Padding(

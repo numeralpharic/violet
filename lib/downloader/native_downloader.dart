@@ -10,6 +10,7 @@ import 'dart:typed_data';
 
 import 'package:device_info/device_info.dart';
 import 'package:ffi/ffi.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
@@ -167,7 +168,7 @@ class NativeDownloader {
       final support64 = deviceInfo.supported64BitAbis;
       if (support64 != null && support64.length > 0) {
         if (kDebugMode)
-          soResource = "assets/libviolet/x86_64/libviolet.so";
+          soResource = "assets/libviolet/arm64-v8a/libviolet.so";
         else
           soResource = "assets/libviolet/arm64-v8a/libviolet.so";
       }
